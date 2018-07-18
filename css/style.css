@@ -1,21 +1,12 @@
 @import url(reset.css);
- 
-
 
 body{
 	background: gray;
 }
 
 
-td{
-	border: 2px solid black;
-	width: 150px;
-	height: 30px;
-}
-
 p{
-text-align: center;
+	text-align: center;
 }
 
 
- </style>

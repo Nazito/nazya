@@ -2,8 +2,21 @@
 
 body{
 	background: gray;
+	text-align: center;
 }
 
+
+td{
+	border:3px solid black;
+	padding-left: 50px;
+	padding-right: 50px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+table{
+	margin:0 auto;
+}
 
 p{
 	text-align: center;

@@ -10,6 +10,7 @@ var businessCase = [
 ]
 
 var parentUl =  document.getElementById('parent');
+innerBusinessCase(businessCase)
 
 function innerBusinessCase(caselist) {
   removeElements()
@@ -45,6 +46,39 @@ function removeElements(){
   parentUl.removeChild(del[i]);
   }
   }
+
+
+var act = document.getElementById('active');
+act.addEventListener('click', active);
+
+function active(){
+	var active = []
+	for(var i = 0;i < businessCase.length;i++){
+		if(businessCase[i]['completed'] == false){
+         active.push(businessCase[i])
+         innerBusinessCase(active)
+		}
+	}
+}
+
+
+var comp = document.getElementById('complited');
+comp.addEventListener('click', complited);
+
+function complited(){
+	var complited = []
+	for(var i = 0;i < businessCase.length;i++){
+		if(businessCase[i]['completed'] == true){
+         complited.push(businessCase[i])
+         innerBusinessCase(complited)
+		}
+	}
+}
+
+
+
+
+
 
 
 
@@ -84,19 +118,22 @@ use.addEventListener('click', addText);
 function addText(){
 	var text = prompt("name","")
 	event.target.innerHTML = text;
-for(var i = 0;i < use.length;i++){
+}
+
+
+var adic = document.getElementById('add');
+adic.addEventListener('click', addef);
+
+
+function addef(){
 	var tr = document.createElement('tr')
-	for(var j = 0;j < 2;j++){
-		var td = document.createElement('td');
-		tr.appendChild(td)
-	}
-	var name = = document.getElementById('');
-	table.appendChild(tr);
-}
-	
-	
+	for(var i = 0;i < 2;i++){
+	var td = document.createElement('td');
+	td.classList.add(i + 'elements');
+	tr.appendChild(td)}	
+	use.appendChild(tr);
 
-}
 
 
 
+}

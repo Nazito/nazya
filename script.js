@@ -117,7 +117,8 @@ use.addEventListener('click', addText);
 
 function addText(){
 	var text = prompt("name","")
-	event.target.innerHTML = text;
+  event.target.innerHTML = text;
+  console.log(22)
 }
 
 
@@ -128,7 +129,7 @@ adic.addEventListener('click', addef);
 function addef(){
 	var tr = document.createElement('tr')
 	for(var i = 0;i < 2;i++){
-	var td = document.createElement('td');
+  var td = document.createElement('td');
 	td.classList.add(i + 'elements');
 	tr.appendChild(td)}	
 	use.appendChild(tr);

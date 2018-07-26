@@ -1,14 +1,7 @@
 
 
-var businessCase = [
-  {value: 'dsfasd1', completed: false},
-  {value: 'dsfasd2', completed: true},
-  {value: 'dsfasd3', completed: true},
-  {value: 'dsfasd4', completed: false},
-  {value: 'dsfasd5', completed: false},
-  {value: 'dsfasd5', completed: false},
-]
-
+var businessCase = []
+var id = 0;
 var parentUl =  document.getElementById('parent');
 innerBusinessCase(businessCase)
 
@@ -33,8 +26,9 @@ addBusines.onkeypress = addBusinessCase;
 function addBusinessCase(event) {
   var code = event.keyCode;
   if (code == 13){
-  
-  businessCase.push({value: this.value,completed: true})
+  id = id + 1; 
+  console.log(id)
+  businessCase.push({value: this.value,completed: false, id: id})
   addBusines.value = '';
   innerBusinessCase(businessCase)
   }
@@ -118,7 +112,6 @@ use.addEventListener('click', addText);
 function addText(){
 	var text = prompt("name","")
   event.target.innerHTML = text;
-  console.log(22)
 }
 
 
@@ -130,6 +123,9 @@ function addef(){
 	var tr = document.createElement('tr')
 	for(var i = 0;i < 2;i++){
   var td = document.createElement('td');
+  if (i === 1) {
+    td.innerHTML = "sadfgsg"
+  }
 	td.classList.add(i + 'elements');
 	tr.appendChild(td)}	
 	use.appendChild(tr);

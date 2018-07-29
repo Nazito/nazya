@@ -5,14 +5,27 @@ var id = 0;
 var parentUl =  document.getElementById('parent');
 innerBusinessCase(businessCase)
 
+
+   
+
+
+
+
 function innerBusinessCase(caselist) {
   removeElements()
 
   for (var i = 0; i < caselist.length;i++) {
   var li = document.createElement('li');
   li.innerHTML = caselist[i]['value'];
+  li.setAttribute('data', i)
+  li.addEventListener('click', addSign);
+
+
+
   parentUl.appendChild(li);
   li.classList.add('elements');
+
+  
 
   if (caselist[i]['completed'] == true ) {
   li.style.textDecoration = 'line-through';
@@ -70,11 +83,15 @@ function complited(){
 }
 
 
+function addSign() {
+	for (var i = 0;i < businessCase.length;i++){
+		if( i == this.getAttribute('data')){
+			businessCase[i]['completed'] = true
+		}
+	}
 
-
-
-
-
+   innerBusinessCase(businessCase)
+  }
 
 
 

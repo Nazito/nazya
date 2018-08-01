@@ -205,7 +205,7 @@ function addef(){
 }
 var forms = document.forms;
 var elements = document.forms.elements;
-var rezult = 0
+//var rezult = 0
 
 
 

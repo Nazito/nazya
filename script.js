@@ -25,6 +25,11 @@ function innerBusinessCase(caselist) {
     li.innerHTML = caselist[i]['value'];
     li.setAttribute('data', caselist[i]['id'])
 
+    var input = document.createElement('input');
+    input.setAttribute('type', "checkbox")
+    input.setAttribute("checked", "checked")
+    li.appendChild(input);
+    
     parentUl.appendChild(li);
     li.classList.add('elements');
 
@@ -91,16 +96,16 @@ function complited(){
 
 function styleElement() {
 	
-	var inner = getBusinessCase()
-	for (var i = 0;i < inner.length;i++){
+	
+	for (var i = 0;i < businessCase.length;i++){
 
-		if( inner[i]['id'] == event.target.getAttribute('data')){
-			inner[i]['completed'] = !inner[i]['completed'];
-			removeElements()
-			innerBusinessCase(inner)
-				
+		if( businessCase[i]['id'] == event.target.getAttribute('data')){
+			businessCase[i]['completed'] = !businessCase[i]['completed'];	
 		}
 	}
+	var inner = getBusinessCase()
+	removeElements()
+	innerBusinessCase(inner)
 }
 
 
@@ -152,19 +157,30 @@ function getBusinessCase(){
 
 
 
-var cklack = document.getElementById('suma');
-cklack.addEventListener('click', sum);
+var inpute = document.getElementById('num');
+inpute.addEventListener('blur', sum);
 
 
 
 function sum(){
-var num = document.getElementsByClassName('num');
-var rez = 0
-var rezult = document.getElementById('rezult');
-		for(var i = 0;i < num.length;i++){
-		  rez += Number(num[i].value)
+var str = this.value
+var arr = str.split(' ');
+var max = 0
+var num = 0
+
+
+	for (var i = 0;i < arr.length;i++){
+		input.value = arr[i]
+		num = input.value.length
+		if(num > max){
+			max = num
 		}
-	rezult.innerHTML = rez
+	}
+	var p = document.getElementById('result');
+	p.innerHTML = max;
 }
+
+	
+
 
 

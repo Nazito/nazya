@@ -10,65 +10,59 @@ var parentUl =  document.getElementById('parent');
 parentUl.addEventListener('click', styleElement);
 innerBusinessCase(businessCase)
 var filter = 'all'
-
+ 
    
 
 
 
 
 function innerBusinessCase(caselist) {
-  removeElements()
+    removeElements()
 
-  for (var i = 0; i < caselist.length;i++) {
+    for (var i = 0; i < caselist.length;i++) {
 
+    var li = document.createElement('li');
+    li.innerHTML = caselist[i]['value'];
+    li.setAttribute('data', caselist[i]['id'])
 
+    parentUl.appendChild(li);
+    li.classList.add('elements');
 
-  var li = document.createElement('li');
-  li.innerHTML = caselist[i]['value'];
-  li.setAttribute('data', caselist[i]['id'])
-  
-
-
-
-  parentUl.appendChild(li);
-  li.classList.add('elements');
-
-  
-
-  if (caselist[i]['completed'] == true ) {
-  li.style.textDecoration = 'line-through';
-  }
-  }
-  }
+  		if (caselist[i]['completed'] == true ) {
+  		li.style.textDecoration = 'line-through';
+  		}
+    }
+}
   
 var addBusines = document.getElementById('input');
 addBusines.onkeypress = addBusinessCase;
 	
 function addBusinessCase(event) {
   var code = event.keyCode;
-  if (code == 13){
-  id = id + 1; 
-  console.log(id)
-  businessCase.push({value: this.value,completed: false, id: id})
-  addBusines.value = '';
-  innerBusinessCase(businessCase)
-  }
-  }
+  	if (code == 13){
+    id = id + 1; 
+    console.log(id)
+    businessCase.push({value: this.value,completed: false, id: id})
+    addBusines.value = '';
+    innerBusinessCase(businessCase)
+    }
+ }
  
 function removeElements(){
-  var del = document.querySelectorAll('.elements');
-  for (var i = 0;i < del.length;i++){
-  parentUl.removeChild(del[i]);
-  }
-  }
+ 
+    var del = document.querySelectorAll('.elements');
+  	for (var i = 0;i < del.length;i++){
+  	parentUl.removeChild(del[i]);
+  	}
+}
 
 var allElement = document.getElementById('all');
 allElement.addEventListener('click', all);
 
 function all(){
-  filter = 'all'
+    filter = 'all'
 	
-  innerBusinessCase(businessCase)
+    innerBusinessCase(businessCase)
 }
 
 
@@ -79,13 +73,8 @@ activeElement.addEventListener('click', active);
 function active(){
     filter = 'active'
 
-	var active = []
-	for(var i = 0;i < businessCase.length;i++){
-		if(businessCase[i]['completed'] == false){
-         active.push(businessCase[i])
-         innerBusinessCase(active) 
-		}
-	}
+	var active = getBusinessCase()
+    innerBusinessCase(active)
 }
 
 
@@ -95,44 +84,42 @@ complitedElement.addEventListener('click', complited);
 function complited(){
     filter = 'complited'
 
-	var complited = []
-	for(var i = 0;i < businessCase.length;i++){
-		if(businessCase[i]['completed'] == true){
-         complited.push(businessCase[i])
-         innerBusinessCase(complited)
-		}
-	}
+	var complited = getBusinessCase()
+	innerBusinessCase(complited)
 }
 
 
 function styleElement() {
-	for (var i = 0;i < businessCase.length;i++){
-		if( businessCase[i]['id'] == event.target.getAttribute('data')){
-			businessCase[i]['completed'] = true
+	
+	var inner = getBusinessCase()
+	for (var i = 0;i < inner.length;i++){
+
+		if( inner[i]['id'] == event.target.getAttribute('data')){
+			inner[i]['completed'] = !inner[i]['completed'];
+			removeElements()
+			innerBusinessCase(inner)
+				
 		}
 	}
-   
-   innerBusinessCase(businessCase)
-
-  }
+}
 
 
 function getBusinessCase(){
 	if (filter === 'active'){
 		var activeElement = []
 		for(var i = 0; i < businessCase.length;i++){
-		if(businessCase[i]['completed'] == false){
-        activeElement.push(businessCase[i])
-		}	
+			if(businessCase[i]['completed'] == false){
+        	activeElement.push(businessCase[i])
+			}	
 		}
 		return  activeElement
 	}
     else if (filter === 'complited'){
 		var complitedElement = []
 		for(var i = 0; i < businessCase.length;i++){
-		if(businessCase[i]['completed'] == true){
-        complitedElement.push(businessCase[i])
-		}	
+			if(businessCase[i]['completed'] == true){
+        	complitedElement.push(businessCase[i])
+			}	
 		}
 		return  complitedElement
 	}
@@ -147,7 +134,6 @@ function getBusinessCase(){
 
 
 
-console.log(getBusinessCase())
 
 
 
@@ -166,55 +152,19 @@ console.log(getBusinessCase())
 
 
 
-
-
-var use = document.getElementById('user');
-use.addEventListener('click', addText);
-
+var cklack = document.getElementById('suma');
+cklack.addEventListener('click', sum);
 
 
 
-function addText(){
-	var text = prompt("name","")
-  event.target.innerHTML = text;
+function sum(){
+var num = document.getElementsByClassName('num');
+var rez = 0
+var rezult = document.getElementById('rezult');
+		for(var i = 0;i < num.length;i++){
+		  rez += Number(num[i].value)
+		}
+	rezult.innerHTML = rez
 }
 
 
-var adic = document.getElementById('add');
-adic.addEventListener('click', addef);
-
-
-function addef(){
-	var tr = document.createElement('tr')
-	for(var i = 0;i < 2;i++){
-  var td = document.createElement('td');
-  if (i === 0) {
-  	var name = document.getElementById('name');
-    td.innerHTML = name.value
-  }else if(i === 1){
-  	var secondName = document.getElementById('secondName');
-  	td.innerHTML = secondName.value
-  }
-	
-	tr.appendChild(td)}	
-	use.appendChild(tr);
-
-
-
-
-}
-var forms = document.forms;
-var elements = document.forms.elements;
-//var rezult = 0
-
-
-
-///for (var i = 0;i < forms.length;i++){
- ///  rezult += forms[i]
-	//for (var j = 0;j < elements.length;i++){
-//
-	///	rezult += elements[j]
-	//}
-  // rezult += forms[i]
-////}
-///alert(rezult)

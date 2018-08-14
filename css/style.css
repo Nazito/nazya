@@ -6,20 +6,38 @@ body{
 }
 
 
-td{
-	border:3px solid black;
-	padding-left: 50px;
-	padding-right: 50px;
-	padding-top: 10px;
-	padding-bottom: 10px;
+.logo{
+	background: white;
+	width: 35px;
+	height: 35px;
+	float: left;
+	
+	
 }
 
-table{
-	margin:0 auto;
+.del{
+	background: white;
+	width: 35px;
+	height: 35px;
+	float: right;
 }
+
+.edit{
+	
+	height: 30px;
+	width: 300px;
+	overflow: visible;
+}
+
+
 
 p{
 	text-align: center;
+	height:  
 }
 
+.elements{
+display: table;	
+margin-left: 500px;
 
+}

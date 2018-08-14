@@ -22,19 +22,47 @@ function innerBusinessCase(caselist) {
     for (var i = 0; i < caselist.length;i++) {
 
     var li = document.createElement('li');
-    li.innerHTML = caselist[i]['value'];
-    li.setAttribute('data', caselist[i]['id'])
+    
+
+    var div = document.createElement('div');
+    div.setAttribute('class', 'logo')
+    
+    var img = document.createElement('img');
+    img.setAttribute('src', 'images/ready.png')
+    img.setAttribute('data', caselist[i]['id'])
+    div.appendChild(img);
+
+
+
+
+
 
     var input = document.createElement('input');
-    input.setAttribute('type', "checkbox")
-    input.setAttribute("checked", "checked")
+    input.setAttribute("class", "edit")
+    input.value = caselist[i]['value'];
+    
+
+
+
+
+    var remove = document.createElement('div');
+    remove.setAttribute('class', 'del')
+
+    var del = document.createElement('img');
+    del.setAttribute('src', 'images/del.png')
+    remove.appendChild(del)
+
+
+
+    li.appendChild(div);
     li.appendChild(input);
+    li.appendChild(remove);
     
     parentUl.appendChild(li);
     li.classList.add('elements');
 
   		if (caselist[i]['completed'] == true ) {
-  		li.style.textDecoration = 'line-through';
+  		input.style.textDecoration = 'line-through';
   		}
     }
 }
@@ -96,7 +124,8 @@ function complited(){
 
 function styleElement() {
 	
-	
+	var edit =  document.querySelectorAll('.edit');
+
 	for (var i = 0;i < businessCase.length;i++){
 
 		if( businessCase[i]['id'] == event.target.getAttribute('data')){

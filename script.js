@@ -8,6 +8,7 @@ var businessCase = [{value: '11111111111111',completed: false, id: 222},
 var id = 0;
 var parentUl =  document.getElementById('parent');
 parentUl.addEventListener('click', styleElement);
+parentUl.addEventListener('click', removeElement);
 innerBusinessCase(businessCase)
 var filter = 'all'
  
@@ -28,7 +29,7 @@ function innerBusinessCase(caselist) {
     div.setAttribute('class', 'logo')
     
     var img = document.createElement('img');
-    img.setAttribute('src', 'images/ready.png')
+    img.setAttribute('src', 'images/todo.png')
     img.setAttribute('data', caselist[i]['id'])
     div.appendChild(img);
 
@@ -50,6 +51,8 @@ function innerBusinessCase(caselist) {
 
     var del = document.createElement('img');
     del.setAttribute('src', 'images/del.png')
+    del.setAttribute('data-del', caselist[i]['id'])
+
     remove.appendChild(del)
 
 
@@ -124,12 +127,32 @@ function complited(){
 
 function styleElement() {
 	
-	var edit =  document.querySelectorAll('.edit');
+	event.target.setAttribute('src', 'images/del.png')
 
 	for (var i = 0;i < businessCase.length;i++){
 
 		if( businessCase[i]['id'] == event.target.getAttribute('data')){
-			businessCase[i]['completed'] = !businessCase[i]['completed'];	
+			businessCase[i]['completed'] = !businessCase[i]['completed'];
+
+		}
+
+	}
+
+	var inner = getBusinessCase()
+	removeElements()
+	innerBusinessCase(inner)
+}
+
+
+
+
+function removeElement() {
+	
+
+	for (var i = 0;i < businessCase.length;i++){
+
+		if( businessCase[i]['id'] == event.target.getAttribute('data-del')){
+			businessCase.splice(i, 1);	
 		}
 	}
 	var inner = getBusinessCase()
@@ -193,20 +216,11 @@ inpute.addEventListener('blur', sum);
 
 function sum(){
 var str = this.value
-var arr = str.split(' ');
-var max = 0
-var num = 0
+var arr = str.split('.')
+arr.reverse();
+this.value = arr.join('-')
 
-
-	for (var i = 0;i < arr.length;i++){
-		input.value = arr[i]
-		num = input.value.length
-		if(num > max){
-			max = num
-		}
-	}
-	var p = document.getElementById('result');
-	p.innerHTML = max;
+	
 }
 
 	

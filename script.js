@@ -1,19 +1,78 @@
 
 
-var businessCase = [{value: '11111111111111',completed: false, id: 222},
-                    {value: '333333333333333',completed: false, id: 88},
-                    {value: '44444444444444',completed: true, id: 55},
-                    {value: '55555555555555',completed: true, id: 66},
-                    {value: '66666666666666',completed: false, id: 77}]
+var businessCase = []
 var id = 0;
 var parentUl =  document.getElementById('parent');
+var first =  document.getElementById('first');
 parentUl.addEventListener('click', styleElement);
 parentUl.addEventListener('click', removeElement);
-innerBusinessCase(businessCase)
-var filter = 'all'
- 
-   
 
+var filter = 'all'
+
+   
+function innertodo(){
+
+
+
+
+var div = document.createElement('div');
+div.setAttribute("class", "footer")
+
+div.style.height = '40px'
+
+
+var span = document.createElement('span');
+span.innerHTML = '0 items left'
+span.setAttribute("class", "spanFooter")
+span.setAttribute("id", "spanFooter")
+
+
+
+var ul = document.createElement('ul');
+ul.setAttribute("class", "ulFooter")
+
+
+var all = document.createElement('li');
+all.innerHTML = 'All'
+all.setAttribute("id", "all")
+all.setAttribute("class", "borderActive")
+
+
+
+
+var active = document.createElement('li');
+active.innerHTML = 'Ative'
+active.setAttribute("id", "active")
+active.setAttribute("class", "borderNone")
+
+
+
+var complited = document.createElement('li');
+complited.innerHTML = 'Completed'
+complited.setAttribute("id", "complited")
+complited.setAttribute("class", "borderNone")
+
+
+
+var input = document.createElement('input');
+input.setAttribute("type", "button")
+input.setAttribute("value", "")
+input.setAttribute("class", "inputFooter")
+input.setAttribute("id", "inputFooter")
+
+
+div.appendChild(input);
+ul.appendChild(complited);
+ul.appendChild(active);
+ul.appendChild(all);
+div.appendChild(ul);
+div.appendChild(span);
+first.appendChild(div);
+
+
+
+
+}
 
 
 
@@ -22,7 +81,11 @@ function innerBusinessCase(caselist) {
 
     for (var i = 0; i < caselist.length;i++) {
 
+
+
+
     var li = document.createElement('li');
+    li.classList.add('elements');
     
 
     var div = document.createElement('div');
@@ -31,6 +94,9 @@ function innerBusinessCase(caselist) {
     var img = document.createElement('img');
     img.setAttribute('src', 'images/todo.png')
     img.setAttribute('data', caselist[i]['id'])
+    img.setAttribute('class', 'readyGo')
+    img.style.width = '35px'
+    img.style.height = '35px'
     div.appendChild(img);
 
 
@@ -38,9 +104,9 @@ function innerBusinessCase(caselist) {
 
 
 
-    var input = document.createElement('input');
-    input.setAttribute("class", "edit")
-    input.value = caselist[i]['value'];
+    var content = document.createElement('div');
+    content.setAttribute("class", "edit")
+    content.innerHTML = caselist[i]['value'];
     
 
 
@@ -48,26 +114,50 @@ function innerBusinessCase(caselist) {
 
     var remove = document.createElement('div');
     remove.setAttribute('class', 'del')
+    remove.setAttribute('data-del', caselist[i]['id'])
+   
 
     var del = document.createElement('img');
-    del.setAttribute('src', 'images/del.png')
-    del.setAttribute('data-del', caselist[i]['id'])
+    remove.appendChild(del);
+    
+    
 
-    remove.appendChild(del)
+    
+   
+
+    
 
 
 
     li.appendChild(div);
-    li.appendChild(input);
+    li.appendChild(content);
     li.appendChild(remove);
     
     parentUl.appendChild(li);
-    li.classList.add('elements');
+
+
+
+    
 
   		if (caselist[i]['completed'] == true ) {
-  		input.style.textDecoration = 'line-through';
+  	
+  		content.style.textDecoration = 'line-through';
+  		content.style.color = '#d9d9d9'
+  		img.setAttribute('src', 'images/ready.png')
+  		buttonValue()
+
+  		
   		}
     }
+    
+
+
+   
+
+
+
+
+   
 }
   
 var addBusines = document.getElementById('input');
@@ -81,6 +171,11 @@ function addBusinessCase(event) {
     businessCase.push({value: this.value,completed: false, id: id})
     addBusines.value = '';
     innerBusinessCase(businessCase)
+    innertodo()
+    
+    leftItems()
+
+    
     }
  }
  
@@ -89,16 +184,19 @@ function removeElements(){
     var del = document.querySelectorAll('.elements');
   	for (var i = 0;i < del.length;i++){
   	parentUl.removeChild(del[i]);
-  	}
+  	}i
 }
 
 var allElement = document.getElementById('all');
 allElement.addEventListener('click', all);
 
+
 function all(){
     filter = 'all'
-	
+    borderStyle('all')
     innerBusinessCase(businessCase)
+    
+
 }
 
 
@@ -106,11 +204,16 @@ function all(){
 var activeElement = document.getElementById('active');
 activeElement.addEventListener('click', active);
 
+
 function active(){
     filter = 'active'
 
+    borderStyle('active')
 	var active = getBusinessCase()
     innerBusinessCase(active)
+    
+   
+  
 }
 
 
@@ -119,7 +222,7 @@ complitedElement.addEventListener('click', complited);
 
 function complited(){
     filter = 'complited'
-
+    borderStyle('complited')
 	var complited = getBusinessCase()
 	innerBusinessCase(complited)
 }
@@ -127,14 +230,21 @@ function complited(){
 
 function styleElement() {
 	
-	event.target.setAttribute('src', 'images/del.png')
+	
 
 	for (var i = 0;i < businessCase.length;i++){
 
 		if( businessCase[i]['id'] == event.target.getAttribute('data')){
 			businessCase[i]['completed'] = !businessCase[i]['completed'];
+			buttonValue()
+			if(businessCase[i]['completed'] == true){
+				
+			}
 
-		}
+			else if (businessCase[i]['completed'] == false){
+				buttonValue()
+			}
+		}	
 
 	}
 
@@ -146,13 +256,13 @@ function styleElement() {
 
 
 
-function removeElement() {
-	
-
+function removeElement() {					/*кнопка удаления елементов */
 	for (var i = 0;i < businessCase.length;i++){
 
 		if( businessCase[i]['id'] == event.target.getAttribute('data-del')){
 			businessCase.splice(i, 1);	
+			leftItems()
+			buttonValue()
 		}
 	}
 	var inner = getBusinessCase()
@@ -162,7 +272,7 @@ function removeElement() {
 
 
 function getBusinessCase(){
-	if (filter === 'active'){
+	if (filter === 'active'){    			/*возврат нужного масива в переключатель */
 		var activeElement = []
 		for(var i = 0; i < businessCase.length;i++){
 			if(businessCase[i]['completed'] == false){
@@ -184,46 +294,90 @@ function getBusinessCase(){
      else if (filter === 'all'){
 		return businessCase
 	}
+}
+
+	
+function leftItems(){
+var items = document.getElementById('spanFooter'); 			/*счетчик елементов массива */
+return items.innerHTML = businessCase.length + ' items left'	
+}
 
 
+var clear = document.getElementById('inputFooter');
+clear.addEventListener('click', clearComplited);
+
+function clearComplited() {
+			businessCase.sort (function(a, b) {					/*сортировка и удаление отмеченых елементов */
+			return(b['completed'] - a['completed'])  	
+			});
+			var newArr = []
+			for(var i = 0;i < businessCase.length;i++){
+				if(businessCase[i]['completed'] == true){
+					newArr.push(businessCase[i])
+				}	
+			}
+			businessCase.splice(0, newArr.length);
+			buttonValue()
+innerBusinessCase(businessCase)	
 }
 
 
 
+var logoType = document.getElementById('logoImg');
+logoType.addEventListener('click', logoEdit);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var inpute = document.getElementById('num');
-inpute.addEventListener('blur', sum);
-
-
-
-function sum(){
-var str = this.value
-var arr = str.split('.')
-arr.reverse();
-this.value = arr.join('-')
-
-	
+function logoEdit(){
+	if(event.target.getAttribute('class') === "logoImg"){		/*смена стилизацыи всех елементов контента (кнопка header) */
+		event.target.setAttribute("class", "newlogoImg")
+			for(var i = 0;i < businessCase.length;i++){
+			businessCase[i]['completed'] = true
+			buttonValue()
+			innerBusinessCase(businessCase)	
+			}
+	}
+	else if(event.target.getAttribute('class') === "newlogoImg"){
+		event.target.setAttribute("class", "logoImg")
+			for(var i = 0;i < businessCase.length;i++){
+			businessCase[i]['completed'] = false
+			buttonValue()
+			innerBusinessCase(businessCase)	
+			}
+	}
 }
 
-	
+
+function buttonValue(){
+  
+var clear = document.getElementById('inputFooter');			/*активацыя value в button */
+var sum = [];
+	for (var i = 0;i < businessCase.length;i++){
+		if(businessCase[i]['completed'] === true){
+		sum.push(businessCase[i])
+		}
+	}
+	if(sum.length > 0){
+	return clear.value = 'Clear completed'	
+	}
+	else{return clear.value = ''}
+}
+
+function borderStyle(id){
+	var elem = document.querySelectorAll('.ulFooter li')  /*активацыя border переключателя */
+
+	for (var i = 0;i < elem.length;i++){
+	elem[i].setAttribute('class', 'borderNone')
+	}											
+	document.getElementById(id).setAttribute('class', 'borderActive')					
+}
+
+
+/* */
+
+
+												
+
+
+
 
 
 

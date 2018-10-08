@@ -6,18 +6,17 @@ var parentUl =  document.getElementById('parent');
 var first =  document.getElementById('first');
 parentUl.addEventListener('click', styleElement);
 parentUl.addEventListener('click', removeElement);
-
+innertodo() 
 var filter = 'all'
 
    
 function innertodo(){
 
-
-
+innerBusinessCase(businessCase)
 
 var div = document.createElement('div');
 div.setAttribute("class", "footer")
-
+div.setAttribute("id", "footer")
 div.style.height = '40px'
 
 
@@ -171,11 +170,8 @@ function addBusinessCase(event) {
     businessCase.push({value: this.value,completed: false, id: id})
     addBusines.value = '';
     innerBusinessCase(businessCase)
-    innertodo()
-    
     leftItems()
-
-    
+    footerActive()
     }
  }
  
@@ -184,7 +180,7 @@ function removeElements(){
     var del = document.querySelectorAll('.elements');
   	for (var i = 0;i < del.length;i++){
   	parentUl.removeChild(del[i]);
-  	}i
+  	}
 }
 
 var allElement = document.getElementById('all');
@@ -299,7 +295,7 @@ function getBusinessCase(){
 	
 function leftItems(){
 var items = document.getElementById('spanFooter'); 			/*счетчик елементов массива */
-return items.innerHTML = businessCase.length + ' items left'	
+return items.innerHTML = "<strong>" + businessCase.length + ' items left' + "</strong>"	
 }
 
 
@@ -370,6 +366,17 @@ function borderStyle(id){
 	document.getElementById(id).setAttribute('class', 'borderActive')					
 }
 
+
+
+
+
+
+function footerActive(){
+var footer = document.getElementById('footer');	
+if(footer.getAttribute('class') === 'footer'){
+	footer.setAttribute("class", "footer1")
+}
+} 
 
 /* */
 

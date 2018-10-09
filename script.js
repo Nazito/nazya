@@ -1,162 +1,31 @@
-
-
-var businessCase = []
+var businessCases = []
 var id = 0;
-var parentUl =  document.getElementById('parent');
-var first =  document.getElementById('first');
-parentUl.addEventListener('click', styleElement);
-parentUl.addEventListener('click', removeElement);
-innertodo() 
+var businessCasesList =  document.getElementById('parent');
+var container =  document.getElementById('container');
 var filter = 'all'
 
-   
-function innertodo(){
+initializaApplication() 
 
-innerBusinessCase(businessCase)
+function initializaApplication(){
 
-var div = document.createElement('div');
-div.setAttribute("class", "footer")
-div.setAttribute("id", "footer")
-div.style.height = '40px'
+  businessCasesList.addEventListener('click', toggleBusinessCaseCompleted);
+  businessCasesList.addEventListener('click', removeBusinessCase);
 
+  container.appendChild(createFooter())
 
-var span = document.createElement('span');
-span.innerHTML = '0 items left'
-span.setAttribute("class", "spanFooter")
-span.setAttribute("id", "spanFooter")
-
-
-
-var ul = document.createElement('ul');
-ul.setAttribute("class", "ulFooter")
-
-
-var all = document.createElement('li');
-all.innerHTML = 'All'
-all.setAttribute("id", "all")
-all.setAttribute("class", "borderActive")
-
-
-
-
-var active = document.createElement('li');
-active.innerHTML = 'Ative'
-active.setAttribute("id", "active")
-active.setAttribute("class", "borderNone")
-
-
-
-var complited = document.createElement('li');
-complited.innerHTML = 'Completed'
-complited.setAttribute("id", "complited")
-complited.setAttribute("class", "borderNone")
-
-
-
-var input = document.createElement('input');
-input.setAttribute("type", "button")
-input.setAttribute("value", "")
-input.setAttribute("class", "inputFooter")
-input.setAttribute("id", "inputFooter")
-
-
-div.appendChild(input);
-ul.appendChild(complited);
-ul.appendChild(active);
-ul.appendChild(all);
-div.appendChild(ul);
-div.appendChild(span);
-first.appendChild(div);
-
-
-
+  showBusinessCases(businessCases)
 
 }
 
-
-
-function innerBusinessCase(caselist) {
-    removeElements()
-
-    for (var i = 0; i < caselist.length;i++) {
-
-
-
-
-    var li = document.createElement('li');
-    li.classList.add('elements');
-    
-
-    var div = document.createElement('div');
-    div.setAttribute('class', 'logo')
-    
-    var img = document.createElement('img');
-    img.setAttribute('src', 'images/todo.png')
-    img.setAttribute('data', caselist[i]['id'])
-    img.setAttribute('class', 'readyGo')
-    img.style.width = '35px'
-    img.style.height = '35px'
-    div.appendChild(img);
-
-
-
-
-
-
-    var content = document.createElement('div');
-    content.setAttribute("class", "edit")
-    content.innerHTML = caselist[i]['value'];
-    
-
-
-
-
-    var remove = document.createElement('div');
-    remove.setAttribute('class', 'del')
-    remove.setAttribute('data-del', caselist[i]['id'])
-   
-
-    var del = document.createElement('img');
-    remove.appendChild(del);
-    
-    
-
-    
-   
-
-    
-
-
-
-    li.appendChild(div);
-    li.appendChild(content);
-    li.appendChild(remove);
-    
-    parentUl.appendChild(li);
-
-
-
-    
-
-  		if (caselist[i]['completed'] == true ) {
-  	
-  		content.style.textDecoration = 'line-through';
-  		content.style.color = '#d9d9d9'
-  		img.setAttribute('src', 'images/ready.png')
-  		buttonValue()
-
-  		
-  		}
-    }
-    
-
-
-   
-
-
-
-
-   
+function showBusinessCases(caselist) {
+  removeElements()
+  caselist.forEach(function(businessCase) {
+    var businessCaseElement = createBusinessCaseElement(businessCase)
+    businessCasesList.appendChild(businessCaseElement);
+  })
+  footerActive()
+  leftItems()
+  // buttonValue()
 }
   
 var addBusines = document.getElementById('input');
@@ -166,136 +35,106 @@ function addBusinessCase(event) {
   var code = event.keyCode;
   	if (code == 13){
     id = id + 1; 
-    console.log(id)
-    businessCase.push({value: this.value,completed: false, id: id})
+    businessCases.push({value: this.value,completed: false, id: id})
     addBusines.value = '';
-    innerBusinessCase(businessCase)
-    leftItems()
-    footerActive()
+    showBusinessCases(businessCases)
     }
  }
  
 function removeElements(){
- 
-    var del = document.querySelectorAll('.elements');
-  	for (var i = 0;i < del.length;i++){
-  	parentUl.removeChild(del[i]);
-  	}
+  var del = document.querySelectorAll('.businessCase');
+  for (var i = 0;i < del.length;i++){
+    businessCasesList.removeChild(del[i]);
+  }
 }
 
 var allElement = document.getElementById('all');
-allElement.addEventListener('click', all);
+allElement.addEventListener('click', showAll);
 
-
-function all(){
+function showAll(){
     filter = 'all'
-    borderStyle('all')
-    innerBusinessCase(businessCase)
-    
-
+    setSelectedFooterFilterButton('all')
+    showBusinessCases(businessCases)
 }
-
-
 
 var activeElement = document.getElementById('active');
-activeElement.addEventListener('click', active);
+activeElement.addEventListener('click', showActive);
 
+function showActive(){
+  filter = 'active'
 
-function active(){
-    filter = 'active'
-
-    borderStyle('active')
-	var active = getBusinessCase()
-    innerBusinessCase(active)
-    
-   
-  
+  setSelectedFooterFilterButton('active')
+	var active = getBusinessCaseByFilter()
+  showBusinessCases(active)
 }
-
 
 var complitedElement = document.getElementById('complited');
 complitedElement.addEventListener('click', complited);
 
-function complited(){
-    filter = 'complited'
-    borderStyle('complited')
-	var complited = getBusinessCase()
-	innerBusinessCase(complited)
+function showComplited(){
+  filter = 'complited'
+  setSelectedFooterFilterButton('complited')
+	var complited = getBusinessCaseByFilter()
+	showBusinessCases(complited)
 }
 
+function toggleBusinessCaseCompleted() {
+	for (var i = 0;i < businessCases.length;i++){
 
-function styleElement() {
-	
-	
-
-	for (var i = 0;i < businessCase.length;i++){
-
-		if( businessCase[i]['id'] == event.target.getAttribute('data')){
-			businessCase[i]['completed'] = !businessCase[i]['completed'];
+		if( businessCases[i]['id'] == event.target.getAttribute('data')){
+			businessCases[i]['completed'] = !businessCases[i]['completed'];
 			buttonValue()
-			if(businessCase[i]['completed'] == true){
-				
-			}
-
-			else if (businessCase[i]['completed'] == false){
-				buttonValue()
-			}
 		}	
-
 	}
 
-	var inner = getBusinessCase()
+	var inner = getBusinessCaseByFilter()
 	removeElements()
-	innerBusinessCase(inner)
+	showBusinessCases(inner)
 }
 
+function removeBusinessCase() {					/*кнопка удаления елементов */
+	for (var i = 0;i < businessCases.length;i++){
 
-
-
-function removeElement() {					/*кнопка удаления елементов */
-	for (var i = 0;i < businessCase.length;i++){
-
-		if( businessCase[i]['id'] == event.target.getAttribute('data-del')){
-			businessCase.splice(i, 1);	
-			leftItems()
-			buttonValue()
+		if( businessCases[i]['id'] == event.target.getAttribute('data-del')){
+			businessCases.splice(i, 1);	
 		}
 	}
-	var inner = getBusinessCase()
-	removeElements()
-	innerBusinessCase(inner)
+	var inner = getBusinessCaseByFilter()
+	showBusinessCases(inner)
 }
 
 
-function getBusinessCase(){
+function getBusinessCaseByFilter(){
 	if (filter === 'active'){    			/*возврат нужного масива в переключатель */
 		var activeElement = []
-		for(var i = 0; i < businessCase.length;i++){
-			if(businessCase[i]['completed'] == false){
-        	activeElement.push(businessCase[i])
+		for(var i = 0; i < businessCases.length;i++){
+			if(businessCases[i]['completed'] == false){
+        	activeElement.push(businessCases[i])
 			}	
 		}
 		return  activeElement
 	}
     else if (filter === 'complited'){
 		var complitedElement = []
-		for(var i = 0; i < businessCase.length;i++){
-			if(businessCase[i]['completed'] == true){
-        	complitedElement.push(businessCase[i])
+		for(var i = 0; i < businessCases.length;i++){
+			if(businessCases[i]['completed'] == true){
+        	complitedElement.push(businessCases[i])
 			}	
 		}
 		return  complitedElement
 	}
 
      else if (filter === 'all'){
-		return businessCase
+		return businessCases
 	}
 }
 
 	
 function leftItems(){
-var items = document.getElementById('spanFooter'); 			/*счетчик елементов массива */
-return items.innerHTML = "<strong>" + businessCase.length + ' items left' + "</strong>"	
+  var counter = document.getElementById('spanFooter'); 			/*счетчик елементов массива */
+  if(counter) {
+    counter.innerHTML = "<strong>" + businessCases.length + ' items left' + "</strong>"	
+  }
 }
 
 
@@ -303,18 +142,11 @@ var clear = document.getElementById('inputFooter');
 clear.addEventListener('click', clearComplited);
 
 function clearComplited() {
-			businessCase.sort (function(a, b) {					/*сортировка и удаление отмеченых елементов */
-			return(b['completed'] - a['completed'])  	
-			});
-			var newArr = []
-			for(var i = 0;i < businessCase.length;i++){
-				if(businessCase[i]['completed'] == true){
-					newArr.push(businessCase[i])
-				}	
-			}
-			businessCase.splice(0, newArr.length);
-			buttonValue()
-innerBusinessCase(businessCase)	
+  businessCases = businessCases.filter(function(businessCase){
+    return !businessCase['completed']
+  })
+	buttonValue()
+  showBusinessCases(businessCases)	
 }
 
 
@@ -325,18 +157,18 @@ logoType.addEventListener('click', logoEdit);
 function logoEdit(){
 	if(event.target.getAttribute('class') === "logoImg"){		/*смена стилизацыи всех елементов контента (кнопка header) */
 		event.target.setAttribute("class", "newlogoImg")
-			for(var i = 0;i < businessCase.length;i++){
-			businessCase[i]['completed'] = true
+			for(var i = 0;i < businessCases.length;i++){
+			businessCases[i]['completed'] = true
 			buttonValue()
-			innerBusinessCase(businessCase)	
+			showBusinessCases(businessCases)	
 			}
 	}
 	else if(event.target.getAttribute('class') === "newlogoImg"){
 		event.target.setAttribute("class", "logoImg")
-			for(var i = 0;i < businessCase.length;i++){
-			businessCase[i]['completed'] = false
+			for(var i = 0;i < businessCases.length;i++){
+			businessCases[i]['completed'] = false
 			buttonValue()
-			innerBusinessCase(businessCase)	
+			showBusinessCases(businessCases)	
 			}
 	}
 }
@@ -346,9 +178,9 @@ function buttonValue(){
   
 var clear = document.getElementById('inputFooter');			/*активацыя value в button */
 var sum = [];
-	for (var i = 0;i < businessCase.length;i++){
-		if(businessCase[i]['completed'] === true){
-		sum.push(businessCase[i])
+	for (var i = 0;i < businessCases.length;i++){
+		if(businessCases[i]['completed'] === true){
+		sum.push(businessCases[i])
 		}
 	}
 	if(sum.length > 0){
@@ -357,34 +189,100 @@ var sum = [];
 	else{return clear.value = ''}
 }
 
-function borderStyle(id){
-	var elem = document.querySelectorAll('.ulFooter li')  /*активацыя border переключателя */
+function setSelectedFooterFilterButton(id){
+	var elem = document.querySelectorAll('.footerTools li')  /*активацыя border переключателя */
 
 	for (var i = 0;i < elem.length;i++){
-	elem[i].setAttribute('class', 'borderNone')
+	elem[i].classList.remove("selected");
 	}											
-	document.getElementById(id).setAttribute('class', 'borderActive')					
+	document.getElementById(id).classList.add('selected')					
 }
-
-
-
-
-
 
 function footerActive(){
-var footer = document.getElementById('footer');	
-if(footer.getAttribute('class') === 'footer'){
-	footer.setAttribute("class", "footer1")
-}
+  var footer = document.getElementById('footer');	
+  if (businessCases.length && !footer.classList.contains('active')) {
+    footer.classList.add('active')
+  } else if (!businessCases.length && footer.classList.contains('active')) {
+    footer.classList.remove('active')
+  }
 } 
 
-/* */
 
+function createBusinessCaseElement(businessCase) {
+  var businessCaseElement = document.createElement('li');
+  businessCaseElement.classList.add('businessCase');
+  
 
-												
+  var logo = document.createElement('div');
+  logo.setAttribute('class', 'logo')
+  
+  var logoImg = document.createElement('img');
+  logoImg.setAttribute('data', businessCase['id'])
+  logoImg.classList.add('businessCaseLogoImg')
+  logo.appendChild(logoImg);
 
+  var content = document.createElement('div');
+  content.setAttribute("class", "businessCaseContent")
+  content.innerHTML = businessCase['value'];
 
+  var remove = document.createElement('div');
+  remove.setAttribute('class', 'del')
+  remove.setAttribute('data-del', businessCase['id'])
 
+  var removeIcon = document.createElement('img');
+  remove.appendChild(removeIcon);
 
+  businessCaseElement.appendChild(logo);
+  businessCaseElement.appendChild(content);
+  businessCaseElement.appendChild(remove);
+  if (businessCase['completed'] == true ) {
+    businessCaseElement.classList.add('completed');
+  }
+  return businessCaseElement
+}
 
+function createFooterFilterButton(text, type, selected) {
+  var button = document.createElement('li');
+  button.innerHTML = text
+  button.setAttribute("id", type)
+  button.classList.add("footerFilterButton")
+  if (selected) {
+    button.classList.add("selected")
+  }
+  return button
+}
 
+function createFooter() {
+  var footer = document.createElement('div');
+  footer.setAttribute("class", "footer")
+  footer.setAttribute("id", "footer")
+  footer.style.height = '40px'
+
+  var span = document.createElement('span');
+  span.innerHTML = '0 items left'
+  span.setAttribute("class", "spanFooter")
+  span.setAttribute("id", "spanFooter")
+
+  var ul = document.createElement('ul');
+  ul.setAttribute("class", "footerTools")
+
+  var allFilterButton = createFooterFilterButton('All', "all", true);
+  var activeFilterButton = createFooterFilterButton('Ative', 'active', false);
+  var complitedFilterButton = createFooterFilterButton('Completed', 'complited', false);
+ 
+
+  var input = document.createElement('input');
+  input.setAttribute("type", "button")
+  input.setAttribute("value", "")
+  input.setAttribute("class", "inputFooter")
+  input.setAttribute("id", "inputFooter")
+
+  footer.appendChild(input);
+  ul.appendChild(complitedFilterButton);
+  ul.appendChild(activeFilterButton);
+  ul.appendChild(allFilterButton);
+  footer.appendChild(ul);
+  footer.appendChild(span);
+
+  return footer
+}

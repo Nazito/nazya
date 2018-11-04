@@ -259,11 +259,15 @@ function removeElement() {					/*кнопка удаления елементо�
 			businessCase.splice(i, 1);	
 			leftItems()
 			buttonValue()
+			footerActive()
 		}
 	}
 	var inner = getBusinessCase()
+
 	removeElements()
 	innerBusinessCase(inner)
+	leftItems()
+    
 }
 
 
@@ -376,8 +380,13 @@ var footer = document.getElementById('footer');
 if(footer.getAttribute('class') === 'footer'){
 	footer.setAttribute("class", "footer1")
 }
-} 
 
+	if(businessCase.length == 0){
+		footer.setAttribute("class", "footer")
+	}	
+
+
+}
 /* */
 
 
